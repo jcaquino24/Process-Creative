@@ -2240,12 +2240,6 @@
     "name": "t:names.variant_pickers",
     "settings": [
       {
-        "type": "checkbox",
-        "id": "use_finish_images",
-        "label": "Use image buttons for Finish option",
-        "default": true
-      },
-      {
         "type": "header",
         "content": "t:content.variant_settings"
       },
