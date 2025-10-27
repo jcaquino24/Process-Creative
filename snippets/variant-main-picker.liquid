@@ -71,58 +71,142 @@
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
-              <label
-                class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
-              >
-                <input
-                  type="radio"
-                  name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
-                  value="{{ product_option_value | escape }}"
-                  aria-label="{{ product_option_value.name }}"
-                  {% if product_option_value.available == false %}
-                    aria-disabled="true"
-                  {% endif %}
-                  data-previous-checked="false"
-                  data-fieldset-index="{{ fieldset_index }}"
-                  data-input-index="{{ forloop.index0 }}"
-                  data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
-                  data-option-value-id="{{ product_option_value.id }}"
-                  data-option-available="{{ product_option_value.available }}"
-                  data-connected-product-url="{{ product_option_value.product_url }}"
-                  {% if product_option_value.variant.id %}
-                    data-variant-id="{{ product_option_value.variant.id }}"
-                  {% endif %}
-                  {% if product_option_value.selected %}
-                    data-current-checked="true"
-                    checked
-                  {% else %}
-                    data-current-checked="false"
-                  {% endif %}
+
+              {%- comment -%}
+                Representative variant lookup for this option value (used to get metafields / availability / image)
+              {%- endcomment -%}
+              {%- assign rep_variant = nil -%}
+              {%- assign opt_pos = product_option.position | minus: 1 -%}
+              {%- for v in product_resource.variants -%}
+                {%- if v.options[opt_pos] == product_option_value.name -%}
+                  {%- assign rep_variant = v -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- assign option_name_down = product_option.name | downcase -%}
+              {%- assign value_down = product_option_value.name | downcase -%}
+              {%- assign is_finish_option = option_name_down == 'finish' -%}
+              {%- assign is_supported_value = value_down == 'high polish' or value_down == 'matte' -%}
+              {%- assign disabled = false -%}
+              {%- if rep_variant == nil or rep_variant.available == false -%}
+                {%- assign disabled = true -%}
+              {%- endif -%}
+
+              {%- comment -%}
+                Image-card rendering only when merchant has toggled the block setting use_finish_images
+                and the option is exactly "Finish" (case-insensitive) and value is High Polish or Matte.
+              {%- endcomment -%}
+              {%- if block_settings.use_finish_images and is_finish_option and is_supported_value -%}
+                <label
+                  class="variant-option__button-label variant-option__button-label--image {% if disabled %}disabled-option{% endif %}"
+                  for="Option-{{ block.id }}-{{ fieldset_index }}-{{ forloop.index0 }}"
+                  title="{{ product_option_value | escape }}"
                 >
-                {% if variant_style == 'swatch' %}
-                  {% liquid
-                    assign featured_media = product_option_value.variant.featured_media
+                  <input
+                    type="radio"
+                    id="Option-{{ block.id }}-{{ fieldset_index }}-{{ forloop.index0 }}"
+                    name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
+                    value="{{ product_option_value | escape }}"
+                    aria-label="{{ product_option_value.name }}"
+                    {% if product_option_value.available == false %}
+                      aria-disabled="true"
+                    {% endif %}
+                    data-previous-checked="false"
+                    data-fieldset-index="{{ fieldset_index }}"
+                    data-input-index="{{ forloop.index0 }}"
+                    data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
+                    data-option-value-id="{{ product_option_value.id }}"
+                    data-option-available="{{ product_option_value.available }}"
+                    data-connected-product-url="{{ product_option_value.product_url }}"
+                    {% if product_option_value.variant.id %}
+                      data-variant-id="{{ product_option_value.variant.id }}"
+                    {% endif %}
+                    {% if product_option_value.selected %}
+                      data-current-checked="true"
+                      checked
+                    {% else %}
+                      data-current-checked="false"
+                    {% endif %}
+                  >
+                  <div class="opt-card">
+                    <div class="opt-card__media" aria-hidden="true">
+                      {% if rep_variant and rep_variant.metafields.custom.button_image != blank %}
+                        {{ rep_variant.metafields.custom.button_image
+                          | image_url: width: 200, height: 200, crop: "center"
+                          | image_tag: loading: 'lazy', alt: product_option_value.name, class: 'opt-card__img' }}
+                      {% else %}
+                        <div class="opt-card__media--placeholder" aria-hidden="true">
+                          <span class="opt-card__placeholder-text">{{ product_option_value.name | slice: 0, 1 | upcase }}</span>
+                        </div>
+                      {% endif %}
+                    </div>
 
-                    # If the variant has no featured media, and we have a combined listing product, then fall back to
-                    # using the featured media of the child product that is linked to this option value.
-                    if featured_media == blank and product_option_value.product_url
-                      assign featured_media = product_option_value.variant.product.featured_media
-                    endif
-                  %}
+                    <div class="opt-card__content">
+                      <div class="opt-card__title">{{ product_option_value | escape }}</div>
 
-                  {% render 'swatch',
-                    swatch: product_option_value.swatch,
-                    variant_image: featured_media,
-                    mode: 'unscaled'
-                  %}
-                {% else %}
-                  {% if product_option_value.available == true %}
-                    <span class="variant-option__button-label__pill"></span>
+                      {% if rep_variant and rep_variant.metafields.custom.subtext != blank %}
+                        <div class="opt-card__subtext">{{ rep_variant.metafields.custom.subtext }}</div>
+                      {% endif %}
+
+                      {%- if disabled %}
+                        <div class="opt-card__unavailable">{{ 'content.unavailable' | t }}</div>
+                      {%- endif %}
+                    </div>
+                  </div>
+                </label>
+              {%- else -%}
+                <label
+                  class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
+                >
+                  <input
+                    type="radio"
+                    name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
+                    value="{{ product_option_value | escape }}"
+                    aria-label="{{ product_option_value.name }}"
+                    {% if product_option_value.available == false %}
+                      aria-disabled="true"
+                    {% endif %}
+                    data-previous-checked="false"
+                    data-fieldset-index="{{ fieldset_index }}"
+                    data-input-index="{{ forloop.index0 }}"
+                    data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
+                    data-option-value-id="{{ product_option_value.id }}"
+                    data-option-available="{{ product_option_value.available }}"
+                    data-connected-product-url="{{ product_option_value.product_url }}"
+                    {% if product_option_value.variant.id %}
+                      data-variant-id="{{ product_option_value.variant.id }}"
+                    {% endif %}
+                    {% if product_option_value.selected %}
+                      data-current-checked="true"
+                      checked
+                    {% else %}
+                      data-current-checked="false"
+                    {% endif %}
+                  >
+                  {% if variant_style == 'swatch' %}
+                    {% liquid
+                      assign featured_media = product_option_value.variant.featured_media
+
+                      if featured_media == blank and product_option_value.product_url
+                        assign featured_media = product_option_value.variant.product.featured_media
+                      endif
+                    %}
+                    {% render 'swatch',
+                      swatch: product_option_value.swatch,
+                      variant_image: featured_media,
+                      mode: 'unscaled'
+                    %}
+                  {% else %}
+                    {% if product_option_value.available == true %}
+                      <span class="variant-option__button-label__pill"></span>
+                    {% endif %}
+                    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
                   {% endif %}
-                  <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
-                {% endif %}
-                {% render 'strikethrough-variant', product_option: product_option_value %}
-              </label>
+                  {% render 'strikethrough-variant', product_option: product_option_value %}
+                </label>
+              {%- endif -%}
+
             {%- endfor -%}
             {% if option_id_attribute %}
               {% style %}
@@ -135,14 +219,11 @@
         {%- elsif block_settings.variant_style == 'dropdowns' -%}
           {%
             # There is an opportunity to build a custom select component that will allow us to style the select element further (animation for dropdown, swatches shown in the dropdown options, etc)
-            # It's too bad as it mean rebuilding baked in behaviours but I think we've already done that for the locale selectors
-            # in dawn. So it might mean more time spent in setting it up but worth it for future updates/styling.
           %}
           {% liquid
             assign property_being_updated = false
             if settings.variant_swatch_width != settings.variant_swatch_height
               assign property_being_updated = true
-              # (original width / original height) x new height (20px at the moment) = new width
               assign new_width = settings.variant_swatch_width | times: 1.0 | divided_by: settings.variant_swatch_height | times: 20
             endif
           %}
@@ -400,7 +481,6 @@
   }
 
   /* wrap around only for 3 or more variants in a row */
-  /* the more complex selector rules here produce the wrap around effect for first/last variants */
   .variant-option--buttons:has(:nth-of-type(3)) {
     .variant-option__button-label:has([data-current-checked='true']):first-of-type ~ label:last-of-type {
       --pill-offset: calc(100% + 1px);
@@ -525,9 +605,8 @@
     outline-offset: var(--focus-outline-offset);
   }
 
-  /* This triggers iOS < 16.4. The outline bug is not recognized as a lack of @supports */
+  /* This triggers iOS < 16.4 workaround */
   @supports not (background-color: rgb(from red 150 g b / alpha)) {
-    /** There is a bug in safari < 16.4 that causes the outline to not follow the elements border radius. This is a workaround. **/
     .variant-option__button-label--has-swatch:has(:checked),
     .variant-option__button-label:has(:focus-visible) .swatch,
     .facets__inputs-list--swatches-grid .variant-option__button-label--has-swatch:hover .swatch {
@@ -568,6 +647,103 @@
     cursor: pointer;
     width: 100%;
     height: 100%;
+  }
+
+  /* ---------- Image-card specific styles (Finish option) ---------- */
+  .variant-option__button-label--image {
+    padding: 0;
+    border: none;
+    background: transparent;
+    min-width: 120px;
+    box-sizing: border-box;
+    margin: 0.25rem 0;
+  }
+
+  .opt-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--padding-sm);
+    gap: 6px;
+    position: relative;
+    border-radius: 8px;
+    transition: transform var(--animation-speed) var(--animation-easing), box-shadow var(--animation-speed) var(--animation-easing);
+    background: var(--color-variant-background);
+    border: var(--options-border-width) solid var(--color-variant-border);
+  }
+
+  .variant-option__button-label--image:has(:checked) .opt-card,
+  .variant-option__button-label--image:has([data-current-checked='true']) .opt-card {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    border-color: var(--color-selected-variant-border);
+    background: var(--color-selected-variant-background);
+  }
+
+  .opt-card__media {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 6px;
+    overflow: hidden;
+    background: #f5f5f5;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+  }
+
+  .opt-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .opt-card__media--placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(180deg, rgb(var(--color-foreground-rgb) / 0.04), rgb(var(--color-foreground-rgb) / 0.02));
+  }
+
+  .opt-card__placeholder-text {
+    font-weight: 700;
+    color: rgb(var(--color-foreground-rgb) / 0.6);
+    font-size: 1.1rem;
+  }
+
+  .opt-card__title {
+    font-weight: 600;
+    margin-bottom: 2px;
+    font-size: 0.95rem;
+  }
+
+  .opt-card__subtext {
+    font-size: 0.82em;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+  }
+
+  .opt-card__unavailable {
+    font-size: 0.75rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-50));
+    margin-top: 4px;
+  }
+
+  .disabled-option {
+    opacity: 0.45;
+    pointer-events: none;
+    filter: grayscale(30%);
+  }
+
+  @media (max-width: 749px) {
+    .variant-option__button-label--image {
+      max-width: 48%;
+    }
+    .opt-card__media {
+      width: 64px;
+      height: 64px;
+    }
   }
 
   .variant-option__button-label svg {
