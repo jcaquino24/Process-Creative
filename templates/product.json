@@ -254,7 +254,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Order today & receive by the<strong> </strong><strong>{{ closest.product.metafields.custom.eta.value }}</strong></p>",
+                "text": "<h6>Order today & receive by the<strong> </strong><strong>{{ closest.product.metafields.custom.eta.value }}</strong></h6>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
