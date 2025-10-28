@@ -1642,6 +1642,11 @@ media-gallery.media-gallery--grid .media-gallery__grid .product-media-container 
   height: 100%;
   z-index: var(--layer-flat);
   cursor: zoom-in;
+  background-color: rgba(250, 250, 246, 1);
+
+  &:hover {
+    background-color: rgba(250, 250, 246, 1);
+  }
 }
 
 zoom-dialog dialog {
