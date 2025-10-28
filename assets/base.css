@@ -1642,11 +1642,6 @@ media-gallery.media-gallery--grid .media-gallery__grid .product-media-container 
   height: 100%;
   z-index: var(--layer-flat);
   cursor: zoom-in;
-  background-color: transparent;
-
-  &:hover {
-    background-color: transparent;
-  }
 }
 
 zoom-dialog dialog {
