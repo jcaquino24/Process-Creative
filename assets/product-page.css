@@ -138,6 +138,14 @@ ease;
     position: absolute;
     right: 0;
 }
+span.add-to-cart-text {
+    font-weight: 430;
+    font-size: 12px;
+    line-height: 24px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 251, 1);
+    letter-spacing: 5px;
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
