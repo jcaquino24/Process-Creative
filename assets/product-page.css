@@ -43,7 +43,12 @@
     font-size: 14px;
     color: rgba(1, 1, 1, 1);
     line-height: 28px;
+}
+
+@media (min-width: 600px){
+  .timeless-elegance-section .right {
         margin-top: -30%;
+}
 }
 
 .personal-touch-section {
