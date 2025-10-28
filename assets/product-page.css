@@ -146,6 +146,14 @@ span.add-to-cart-text {
     color: rgba(255, 255, 251, 1);
     letter-spacing: 5px;
 }
+span.menu-list__link-title {
+    font-weight: 430;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: 5px;
+    color: rgba(1, 1, 1, 1);
+    text-transform: uppercase;
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
