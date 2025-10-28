@@ -453,6 +453,9 @@
       "block_order": [
         "text_w8tPet"
       ],
+      "custom_css": [
+        ".color-scheme-1 {grid-template-columns: 1fr 1fr;}"
+      ],
       "name": "t:names.product_recommendations",
       "settings": {
         "product": "{{ closest.product }}",
@@ -460,7 +463,7 @@
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 3,
-        "columns": 4,
+        "columns": 2,
         "mobile_columns": "2",
         "columns_gap": 12,
         "rows_gap": 24,
