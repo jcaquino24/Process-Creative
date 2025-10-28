@@ -328,10 +328,7 @@
     "related_product_metafield_jqR4Ej": {
       "type": "related-product-metafield",
       "name": "Related Products by Metafield",
-      "settings": {
-        "heading": "You may also like{{ product.metafields.custom.collection.value }}",
-        "limit": 4
-      }
+      "settings": {}
     },
     "image_with_text_stack_WQiJw9": {
       "type": "image-with-text-stack",
@@ -491,11 +488,11 @@
             "image": "shopify://shop_images/personal.png",
             "link": "",
             "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
+            "width": "fit-content",
+            "custom_width": 70,
+            "width_mobile": "fit-content",
             "custom_width_mobile": 100,
-            "height": "fill",
+            "height": "fit",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -522,7 +519,7 @@
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 32,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "color_scheme": "",
