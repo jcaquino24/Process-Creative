@@ -4,11 +4,11 @@
 
 {% assign metafield_value = product.metafields.custom.collection.value %}
 
-{% if metafield_value %}
-  {% assign related_products = collections.all.products | where: "metafields.custom.collection.value", metafield_value | where: "id", "!=" , product.id %}
-{% endif %}
 
-{% if related_products and related_products.size > 0 %}
+  {% assign related_products = collections.all.products | where: "metafields.custom.collection.value", metafield_value | where: "id", "!=" , product.id %}
+
+
+
   <div class="related-products">
     <h2>Related {{ metafield_value }}s</h2>
     <div class="grid grid--2-col md:grid--4-col">
@@ -22,4 +22,4 @@
       {% endfor %}
     </div>
   </div>
-{% endif %}
+
