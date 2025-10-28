@@ -332,7 +332,7 @@
           "type": "text",
           "name": "t:names.header",
           "settings": {
-            "text": "<p>Explore the cuff collection</p>",
+            "text": "<p>Explore the {{ closest.product.metafields.custom.collection.value }}Collection</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -448,7 +448,7 @@
       ],
       "name": "t:names.product_recommendations",
       "settings": {
-        "product": "{{ closest.product }}",
+        "product": "cuff-ring",
         "recommendation_type": "related",
         "layout_type": "grid",
         "carousel_on_mobile": false,
