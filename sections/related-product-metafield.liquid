@@ -7,54 +7,88 @@
       "id": "heading",
       "label": "Heading",
       "default": "You may also like"
+    },
+    {
+      "type": "number",
+      "id": "limit",
+      "label": "Number of products to show",
+      "default": 4
     }
   ],
   "presets": [
     {
-      "name": "Related Products (Metafield)"
+      "name": "Related Products by Metafield"
     }
   ]
 }
 {% endschema %}
 
-{% if product.metafields.custom.related_products.value != blank %}
-<section class="related-products-metafield">
-  <div class="container">
-    {% if section.settings.heading != blank %}
-      <h2 class="related-title">{{ section.settings.heading }}</h2>
-    {% endif %}
+{% assign current_tag = product.metafields.custom.collection.value %}
 
-    <div class="related-grid">
-      {% for related_product in product.metafields.custom.related_products.value %}
-        {% render 'card-product', card_product: related_product %}
-      {% endfor %}
+{% if current_tag != blank %}
+  {% assign related_products = collections.all.products | where: "metafields.custom.collection.value", current_tag %}
+  {% assign related_products = related_products | where: "id", product.id, false %} <!-- exclude current product -->
+  {% assign related_products = related_products | slice: 0, section.settings.limit %}
+
+  {% if related_products.size > 0 %}
+  <section class="related-by-metafield">
+    <div class="container">
+      <h2 class="heading">{{ section.settings.heading }}</h2>
+      <div class="related-grid">
+        {% for related in related_products %}
+          <a href="{{ related.url }}" class="related-card">
+            <img 
+              src="{{ related.featured_image | image_url: width: 500 }}" 
+              alt="{{ related.title }}" 
+              class="related-image">
+            <h3 class="related-title">{{ related.title }}</h3>
+            <p class="related-price">{{ related.price | money }}</p>
+          </a>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+  {% endif %}
 {% endif %}
 
 <style>
-.related-products-metafield {
+.related-by-metafield {
   padding: 80px 0;
   background: #fff;
 }
-
-.related-products-metafield .container {
+.related-by-metafield .container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 2rem;
 }
-
-.related-products-metafield .related-title {
+.related-by-metafield .heading {
   font-size: 28px;
   font-weight: 500;
-  margin-bottom: 2rem;
   text-align: center;
+  margin-bottom: 3rem;
 }
-
-.related-products-metafield .related-grid {
+.related-by-metafield .related-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
+}
+.related-by-metafield .related-card {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+.related-by-metafield .related-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.related-by-metafield .related-title {
+  font-size: 16px;
+  margin-bottom: 0.25rem;
+}
+.related-by-metafield .related-price {
+  font-size: 15px;
+  color: #555;
 }
 </style>
