@@ -1,3 +1,10 @@
+{%- doc -%}
+  Renders a default variant picker, used to display the variant picker in the variants block.
+
+  @param {object} product_resource - The product object.
+  @param {object} [block] - The block object
+{%- enddoc -%}
+
 {% assign block_settings = block.settings %}
 
 {% unless product_resource.has_only_default_variant %}
@@ -58,9 +65,8 @@
               {{ product_option.name | escape -}}
               {%- if variant_style == 'swatch' -%}
                 <span class="variant-option__swatch-value">{{ product_option.selected_value }}</span>
-              {%- endif -%}
+              {%- endif %}
             </legend>
-
             {%- for product_option_value in product_option.values -%}
               {% if product_option_value.size > longest_value and option_id_attribute %}
                 {% assign longest_value = product_option_value.size %}
@@ -93,61 +99,71 @@
                     data-current-checked="false"
                   {% endif %}
                 >
+                {% if variant_style == 'swatch' %}
+                  {% liquid
+                    assign featured_media = product_option_value.variant.featured_media
 
-                {% liquid
-                  assign option_name = product_option.name | downcase
-                %}
-{% if option_name == 'finish' %}
-  {% assign finish_metaobjects = product.metafields.custom.finish.value %}
-  {% assign finish_image = blank %}
+                    # If the variant has no featured media, and we have a combined listing product, then fall back to
+                    # using the featured media of the child product that is linked to this option value.
+                    if featured_media == blank and product_option_value.product_url
+                      assign featured_media = product_option_value.variant.product.featured_media
+                    endif
+                  %}
 
-  {% if finish_metaobjects %}
-    {% for finish_item in finish_metaobjects %}
-      {% if finish_item.name == product_option_value %}
-        {% assign finish_image = finish_item.image | default: finish_item.finish_image | default: finish_item.photo | default: finish_item.swatch %}
-        {% break %}
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-
-  {% if finish_image and finish_image != blank %}
-    <div class="finish-swatch">
-      <img
-        src="{{ finish_image | image_url: width: 80 }}"
-        alt="{{ product_option_value | escape }}"
-        loading="lazy"
-      >
-    </div>
-  {% else %}
-    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
-  {% endif %}
-{% else %}
-
-
-                  {% if variant_style == 'swatch' %}
-                    {% liquid
-                      assign featured_media = product_option_value.variant.featured_media
-                      if featured_media == blank and product_option_value.product_url
-                        assign featured_media = product_option_value.variant.product.featured_media
-                      endif
-                    %}
-                    {% render 'swatch',
-                      swatch: product_option_value.swatch,
-                      variant_image: featured_media,
-                      mode: 'unscaled'
-                    %}
-                  {% else %}
-                    {% if product_option_value.available == true %}
-                      <span class="variant-option__button-label__pill"></span>
-                    {% endif %}
-                    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
+                  {% render 'swatch',
+                    swatch: product_option_value.swatch,
+                    variant_image: featured_media,
+                    mode: 'unscaled'
+                  %}
+                {% else %}
+                  {% if product_option_value.available == true %}
+                    <span class="variant-option__button-label__pill"></span>
                   {% endif %}
-                {% endif %}
+                  <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
 
+                {% else %}
+                  
+{%- assign rep_variant = nil -%}
+{%- assign opt_pos = option.position | minus: 1 -%}
+{%- for v in product.variants -%}
+  {%- if v.options[opt_pos] == value -%}
+    {%- assign rep_variant = v -%}{%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign option_name_down = option.name | downcase -%}
+{%- assign value_down = value | downcase -%}
+
+                {%- if option_name_down == 'Finish' -%}
+                  {%- if value_down == 'High Polish' or value_down == 'Matte' -%}
+                    <label class="opt-label opt-label--btn btn relative text-center"
+                          for="{{ option_id }}-opt-{{ value_index0 }}">
+                      <div class="opt-card">
+                        {%- if rep_variant and rep_variant.metafields.custom.button_image != blank -%}
+                          <div class="opt-card__media">
+                            {{ rep_variant.metafields.custom.button_image 
+                                | image_url: width: 80, height: 80, crop: "center" 
+                                | image_tag: loading: 'lazy', alt: value, class: 'opt-card__img' }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                    </label>
+                  {%- else -%}
+                    <label class="opt-label opt-label--btn btn relative text-center"
+                          for="{{ option_id }}-opt-{{ value_index0 }}">
+                      <span>{{- value | escape -}}</span>
+                    </label>
+                  {%- endif -%}
+                {%- else -%}
+                  <label class="opt-label opt-label--btn btn relative text-center"
+                        for="{{ option_id }}-opt-{{ value_index0 }}">
+                    <span>{{- value | escape -}}</span>
+                  </label>
+                {%- endif -%}
+                {% endif %}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
             {%- endfor -%}
-
             {% if option_id_attribute %}
               {% style %}
                 [data-option-id="{{ fieldset_id }}"] {
@@ -157,9 +173,30 @@
             {% endif %}
           </fieldset>
         {%- elsif block_settings.variant_style == 'dropdowns' -%}
+          {%
+            # There is an opportunity to build a custom select component that will allow us to style the select element further (animation for dropdown, swatches shown in the dropdown options, etc)
+            # It's too bad as it mean rebuilding baked in behaviours but I think we've already done that for the locale selectors
+            # in dawn. So it might mean more time spent in setting it up but worth it for future updates/styling.
+          %}
+          {% liquid
+            assign property_being_updated = false
+            if settings.variant_swatch_width != settings.variant_swatch_height
+              assign property_being_updated = true
+              # (original width / original height) x new height (20px at the moment) = new width
+              assign new_width = settings.variant_swatch_width | times: 1.0 | divided_by: settings.variant_swatch_height | times: 20
+            endif
+          %}
+
           <div class="variant-option variant-option--dropdowns">
             <label for="Option-{{ block.id }}-{{ forloop.index0 }}">{{ product_option.name | escape }}</label>
-            <div class="variant-option__select-wrapper">
+            <div
+              class="variant-option__select-wrapper"
+              style="
+                {%- if property_being_updated  -%}
+                  --variant-picker-swatch-width: clamp(10px,{{ new_width }}px, 50px);
+                {%- endif -%}
+              "
+            >
               <select
                 id="Option-{{ block.id }}-{{ forloop.index0 }}"
                 name="options[{{ product_option.name | escape }}]"
@@ -184,7 +221,12 @@
                   </option>
                 {%- endfor -%}
               </select>
-              <svg aria-hidden="true" focusable="false" class="icon icon-caret" viewBox="0 0 10 6">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="icon icon-caret"
+                viewBox="0 0 10 6"
+              >
                 {%- render 'icon', icon: 'caret' -%}
               </svg>
             </div>
