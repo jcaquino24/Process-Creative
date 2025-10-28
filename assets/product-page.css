@@ -4,16 +4,16 @@
 }
 
 .timeless-elegance-section .container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 3rem;
 }
 
 .timeless-elegance-section .content-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 0.8fr;
-  align-items: center;
-  gap: 4rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    gap: 10rem;
 }
 
 .timeless-elegance-section .eyebrow {
@@ -56,6 +56,94 @@
     font-size: 14px;
     color: rgba(1, 1, 1, 1);
     line-height: 28px;
+}
+
+.personal-touch-section {
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+.personal-touch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1500px;
+  margin: 0 auto;
+  gap: 60px;
+  padding: 0 20px;
+}
+
+.personal-touch-content {
+  flex: 1;
+}
+
+.personal-touch-subheading {
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(1, 1, 1, 1);
+    margin-bottom: .75rem;
+    font-weight: 430;
+    line-height: 24px;
+}
+
+.personal-touch-heading {
+    font-size: 72px;
+    font-weight: 400;
+    line-height: 80px;
+}
+
+.personal-touch-text p {
+    font-size: 14px;
+    color: rgba(1, 1, 1, 1);
+    max-width: 400px;
+    margin-bottom: 30px;
+    line-height: 28px;
+    font-weight: 430;
+}
+
+.personal-touch-button {
+    display: inline-block;
+    padding: 16px 40px;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 12px;
+    background-color: rgba(29, 15, 7, .02);
+    color: #000;
+    text-decoration: none;
+    transition: all 0.3s 
+ease;
+    line-height: 24px;
+    font-weight: 430;
+}
+
+.personal-touch-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.personal-touch-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .personal-touch-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .personal-touch-image {
+    justify-content: center;
+  }
+
+  .personal-touch-text {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 992px) {
