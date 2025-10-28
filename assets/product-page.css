@@ -168,6 +168,16 @@ span.menu-list__link-title {
     line-height: 32px;
     color: rgba(1, 1, 1, 1);
 }
+.text-block h6 {
+    font-size: 14px;
+    font-weight: 430;
+    line-height: 28px;
+    color: rgba(1, 1, 1, 0.35);
+}
+
+.text-block h6 strong {
+    color: rgba(1, 1, 1, 1);
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
