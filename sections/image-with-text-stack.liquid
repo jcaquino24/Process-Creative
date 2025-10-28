@@ -41,27 +41,30 @@
 
 <section class="timeless-elegance-section">
   <div class="container">
-    <div class="content-wrapper">
-      <div class="left-side">
+    <div class="content-grid">
+      <!-- Text Block -->
+      <div class="text-block">
         {% if section.settings.eyebrow != blank %}
           <p class="eyebrow">{{ section.settings.eyebrow }}</p>
         {% endif %}
         <h2 class="title">{{ section.settings.heading }}</h2>
-
-        {% if section.settings.left_image %}
-          <div class="left-image">
-            <img src="{{ section.settings.left_image | image_url: width: 800 }}" alt="{{ section.settings.heading }}">
-          </div>
+        {% if section.settings.description != blank %}
+          <div class="description">{{ section.settings.description }}</div>
         {% endif %}
       </div>
 
-      <div class="right-side">
-        {% if section.settings.right_image %}
-          <div class="right-image">
-            <img src="{{ section.settings.right_image | image_url: width: 500 }}" alt="{{ section.settings.heading }}">
+      <!-- Image Container -->
+      <div class="image-container">
+        {% if section.settings.left_image %}
+          <div class="image-item left-image">
+            <img src="{{ section.settings.left_image | image_url: width: 800 }}" alt="{{ section.settings.heading }}">
           </div>
         {% endif %}
-        <div class="description">{{ section.settings.description }}</div>
+        {% if section.settings.right_image %}
+          <div class="image-item right-image">
+            <img src="{{ section.settings.right_image | image_url: width: 800 }}" alt="{{ section.settings.heading }}">
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
