@@ -186,6 +186,12 @@ span.menu-list__link-title {
     letter-spacing: 5px;
     text-transform: uppercase;
 }
+span.variant-option__swatch-value {
+    color: rgba(1, 1, 1, 0.35);
+    font-weight: 430;
+    line-height: 28px;
+    font-size: 14px;
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
