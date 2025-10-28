@@ -99,19 +99,31 @@
                 %}
 
                 {% if option_name == 'finish' %}
-                  {% assign finish_metaobject = product.metafields.custom.finish.value | where: 'name', product_option_value | first %}
-                  {% if finish_metaobject and finish_metaobject.image %}
-                    <div class="finish-swatch">
-                      <img
-                        src="{{ finish_metaobject.image | image_url: width: 80 }}"
-                        alt="{{ finish_metaobject.name | escape }}"
-                        loading="lazy"
-                      >
-                    </div>
-                  {% else %}
-                    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
-                  {% endif %}
-                {% else %}
+  {% assign finish_metaobjects = product.metafields.custom.finish.value %}
+  {% assign finish_image = blank %}
+
+  {% if finish_metaobjects %}
+    {% for finish_item in finish_metaobjects %}
+      {% if finish_item.name == product_option_value %}
+        {% assign finish_image = finish_item.image %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if finish_image %}
+    <div class="finish-swatch">
+      <img
+        src="{{ finish_image | image_url: width: 80 }}"
+        alt="{{ product_option_value | escape }}"
+        loading="lazy"
+      >
+    </div>
+  {% else %}
+    <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
+  {% endif %}
+{% else %}
+
                   {% if variant_style == 'swatch' %}
                     {% liquid
                       assign featured_media = product_option_value.variant.featured_media
