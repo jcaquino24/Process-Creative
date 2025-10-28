@@ -252,17 +252,3 @@ label.variant-option__button-label.variant-option__button-label--has-swatch p {
 }
 }
 
-@media (max-width: 992px) {
-  .timeless-elegance-section .content-wrapper {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .timeless-elegance-section .right-side {
-    align-items: flex-start;
-  }
-
-  .timeless-elegance-section .title {
-    font-size: 32px;
-  }
-}
