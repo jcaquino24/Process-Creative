@@ -34,7 +34,7 @@
   {%- comment -%}
     Replace Shopify’s default recommendation logic with metafield-based one
   {%- endcomment -%}
-  {% assign products = collections.all.products 
+  {% assign products = collections['all-products'].products 
     | where: "metafields.custom.collection.value", metafield_value 
     | reject: "id", product.id %}
 {% else %}
