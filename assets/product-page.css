@@ -39,12 +39,6 @@
   object-fit: cover;
 }
 
-.timeless-elegance-section .right-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 .timeless-elegance-section .right-image img {
   width: 100%;
   max-width: 400px;
@@ -52,7 +46,7 @@
   margin-bottom: 1.5rem;
 }
 
-.timeless-elegance-section .description {
+.timeless-elegance-section .right {
     font-size: 14px;
     color: rgba(1, 1, 1, 1);
     line-height: 28px;
@@ -220,6 +214,42 @@ label.variant-option__button-label.variant-option__button-label--has-swatch p {
   .personal-touch-text {
     max-width: 100%;
   }
+      .timeless-elegance-section .content-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        text-align: center;
+        display: grid;
+        align-items: center;
+        grid-template-areas:
+            "left left"
+            "left-image right-image"
+            "right right";
+}
+.left {
+    grid-area: left;
+}
+.left-image {
+    grid-area: left-image;
+}
+.right-image {
+    grid-area: right-image;
+}
+.timeless-elegance-section .left-image img {
+    width: 100%;
+    height: 214px;
+    border-radius: 0;
+    object-fit: cover;
+    margin-top: 1.5em;
+}
+.timeless-elegance-section .right-image img {
+    width: 100%;
+    max-width: 400px;
+    height: 214px;
+    margin-bottom: 1.5rem;
+}
+.right {
+    grid-area: right;
+}
 }
 
 @media (max-width: 992px) {
