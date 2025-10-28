@@ -203,9 +203,13 @@ label.variant-option__button-label.variant-option__button-label--has-swatch p {
     text-transform: uppercase;
     color: rgba(1, 1, 1, 1);
 }
-@media (max-width: 768px) {
+
+@media (max-width: 600px){
+  .left-side {
+    text-align: center;
+}
   .personal-touch-container {
-    flex-direction: column;
+    flex-direction: column-reverse;
     text-align: center;
   }
 
