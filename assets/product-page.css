@@ -131,6 +131,13 @@ ease;
   max-width: 500px;
 }
 
+.personal-touch-content.text-left {
+    position: relative;
+}
+.personal-touch-text-wrapper {
+    position: absolute;
+    right: 0;
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
