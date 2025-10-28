@@ -122,44 +122,44 @@
                   <span class="variant-option__button-label__text">{{ product_option_value | escape }}</span>
 
                 {% else %}
-                  
-{%- assign rep_variant = nil -%}
-{%- assign opt_pos = option.position | minus: 1 -%}
-{%- for v in product.variants -%}
-  {%- if v.options[opt_pos] == value -%}
-    {%- assign rep_variant = v -%}{%- break -%}
-  {%- endif -%}
-{%- endfor -%}
+{%- assign option_name_down = product_option.name | downcase -%}
+{%- assign value_down = product_option_value | downcase -%}
 
-{%- assign option_name_down = option.name | downcase -%}
-{%- assign value_down = value | downcase -%}
+{% if option_name_down == 'finish' %}
+  <label
+    class="opt-label opt-label--btn btn relative text-center"
+    for="{{ option_id }}-opt-{{ forloop.index0 }}"
+  >
+    <div class="opt-card">
+      {%- assign matching_variant = nil -%}
+      {%- for v in product.variants -%}
+        {%- if v.options[product_option.position | minus: 1] == product_option_value -%}
+          {%- assign matching_variant = v -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
 
-                {%- if option_name_down == 'Finish' -%}
-                  {%- if value_down == 'High Polish' or value_down == 'Matte' -%}
-                    <label class="opt-label opt-label--btn btn relative text-center"
-                          for="{{ option_id }}-opt-{{ value_index0 }}">
-                      <div class="opt-card">
-                        {%- if rep_variant and rep_variant.metafields.custom.button_image != blank -%}
-                          <div class="opt-card__media">
-                            {{ rep_variant.metafields.custom.button_image 
-                                | image_url: width: 80, height: 80, crop: "center" 
-                                | image_tag: loading: 'lazy', alt: value, class: 'opt-card__img' }}
-                          </div>
-                        {%- endif -%}
-                      </div>
-                    </label>
-                  {%- else -%}
-                    <label class="opt-label opt-label--btn btn relative text-center"
-                          for="{{ option_id }}-opt-{{ value_index0 }}">
-                      <span>{{- value | escape -}}</span>
-                    </label>
-                  {%- endif -%}
-                {%- else -%}
-                  <label class="opt-label opt-label--btn btn relative text-center"
-                        for="{{ option_id }}-opt-{{ value_index0 }}">
-                    <span>{{- value | escape -}}</span>
-                  </label>
-                {%- endif -%}
+      {%- if matching_variant and matching_variant.metafields.custom.button_image != blank -%}
+        <div class="opt-card__media">
+          {{ matching_variant.metafields.custom.button_image
+            | image_url: width: 80, height: 80, crop: "center"
+            | image_tag: loading: 'lazy', alt: product_option_value, class: 'opt-card__img'
+          }}
+        </div>
+      {%- else -%}
+        <span class="opt-card__text">{{ product_option_value }}</span>
+      {%- endif -%}
+    </div>
+  </label>
+{% else %}
+  <label
+    class="opt-label opt-label--btn btn relative text-center"
+    for="{{ option_id }}-opt-{{ forloop.index0 }}"
+  >
+    <span>{{ product_option_value }}</span>
+  </label>
+{% endif %}
+
                 {% endif %}
                 {% render 'strikethrough-variant', product_option: product_option_value %}
               </label>
