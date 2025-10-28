@@ -459,7 +459,7 @@
         "recommendation_type": "related",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 4,
+        "max_products": 3,
         "columns": 4,
         "mobile_columns": "2",
         "columns_gap": 12,
@@ -469,8 +469,8 @@
         "section_width": "page-width",
         "gap": 28,
         "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "image_with_text_stack_WQiJw9": {
