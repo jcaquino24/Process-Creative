@@ -454,7 +454,7 @@
         "text_w8tPet"
       ],
       "custom_css": [
-        ".color-scheme-1 {grid-template-columns: 1fr 1fr;}"
+        "@media (min-width: 600px) {.color-scheme-1 {grid-template-columns: 1fr 1fr;}}"
       ],
       "name": "t:names.product_recommendations",
       "settings": {
