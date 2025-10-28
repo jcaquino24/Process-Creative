@@ -69,7 +69,9 @@
 .personal-touch-content {
   flex: 1;
 }
-
+.product-media {
+    background: rgba(250, 250, 246, 1);
+}
 .personal-touch-subheading {
     text-transform: uppercase;
     font-size: 12px;
