@@ -26,12 +26,10 @@
 {% assign current_tag = product.metafields.custom.collection.value %}
 
 {% if current_tag != blank %}
-  {% assign current_tag_lower = current_tag | downcase %}
   {% assign related_products = "" | split: "" %}
 
   {% for p in collections.all.products %}
-    {% assign p_tag = p.metafields.custom.collection.value | downcase %}
-    {% if p_tag == current_tag_lower and p.id != product.id %}
+    {% if p.metafields.custom.collection.value == current_tag and p.id != product.id %}
       {% assign related_products = related_products | push: p %}
     {% endif %}
   {% endfor %}
@@ -39,27 +37,27 @@
   {% assign limited_related = related_products | slice: 0, section.settings.limit %}
 
   {% if limited_related.size > 0 %}
-    <section class="related-by-metafield">
-      <div class="container">
-        {% if section.settings.heading != blank %}
-          <h2 class="heading">{{ section.settings.heading }}</h2>
-        {% endif %}
-        <div class="related-grid">
-          {% for related in limited_related %}
-            <a href="{{ related.url }}" class="related-card">
-              {% if related.featured_image %}
-                <img 
-                  src="{{ related.featured_image | image_url: width: 600 }}" 
-                  alt="{{ related.title }}" 
-                  class="related-image">
-              {% endif %}
-              <h3 class="related-title">{{ related.title }}</h3>
-              <p class="related-price">{{ related.price | money }}</p>
-            </a>
-          {% endfor %}
-        </div>
+  <section class="related-by-metafield">
+    <div class="container">
+      {% if section.settings.heading != blank %}
+        <h2 class="heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      <div class="related-grid">
+        {% for related in limited_related %}
+          <a href="{{ related.url }}" class="related-card">
+            {% if related.featured_image %}
+              <img 
+                src="{{ related.featured_image | image_url: width: 600 }}" 
+                alt="{{ related.title }}" 
+                class="related-image">
+            {% endif %}
+            <h3 class="related-title">{{ related.title }}</h3>
+            <p class="related-price">{{ related.price | money }}</p>
+          </a>
+        {% endfor %}
       </div>
-    </section>
+    </div>
+  </section>
   {% endif %}
 {% endif %}
 
