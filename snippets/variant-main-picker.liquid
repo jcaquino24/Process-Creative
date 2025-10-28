@@ -73,7 +73,8 @@
               {% endif %}
               <label
                 class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}"
-              >
+              > 
+              <p> {{ product_option.value }}</p>
                 <input
                   type="radio"
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
