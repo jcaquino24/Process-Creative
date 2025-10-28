@@ -160,6 +160,7 @@ span.menu-list__link-title {
     line-height: 24px;
     letter-spacing: 5px;
     color: rgba(1, 1, 1, 1);
+    font-family: matter-trial;
 }
 @media (max-width: 768px) {
   .personal-touch-container {
