@@ -409,6 +409,17 @@
         "padding-block-end": 48
       }
     },
+    "image_with_text_stack_WQiJw9": {
+      "type": "image-with-text-stack",
+      "name": "Timeless Elegance Section",
+      "settings": {
+        "eyebrow": "Behind the Ring",
+        "heading": "Timeless Elegance",
+        "left_image": "shopify://shop_images/ring_4.png",
+        "right_image": "shopify://shop_images/image_66.png",
+        "description": "<p>Our most coveted engagement ring silhouette. The Ceremonial Solitaire showcases a dazzling oval diamond in a minimal basket setting.</p>"
+      }
+    },
     "section_Gr6aED": {
       "type": "section",
       "blocks": {
@@ -610,6 +621,7 @@
   "order": [
     "main",
     "product_recommendations_qggXJq",
+    "image_with_text_stack_WQiJw9",
     "section_Gr6aED"
   ]
 }
