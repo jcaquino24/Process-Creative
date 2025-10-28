@@ -193,8 +193,15 @@ span.variant-option__swatch-value {
     font-size: 14px;
 }
 label.variant-option__button-label.variant-option__button-label--has-swatch {
-    padding: 16px 14px 20px 14px;
-    background: rgba(29, 15, 7, 0.02);
+    padding: 16px 25px 20px 25px;
+    background: #1d0f0705;
+}
+label.variant-option__button-label.variant-option__button-label--has-swatch p {
+    font-weight: 430;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(1, 1, 1, 1);
 }
 @media (max-width: 768px) {
   .personal-touch-container {
