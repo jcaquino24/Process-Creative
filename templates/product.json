@@ -483,12 +483,26 @@
         "right_image": "shopify://shop_images/image_66.png",
         "description": "<p>Our most coveted engagement ring silhouette. The Ceremonial Solitaire showcases a dazzling oval diamond in a minimal basket setting.</p>"
       }
+    },
+    "personal_touch_4UzpdF": {
+      "type": "personal-touch",
+      "name": "Personal Touch",
+      "settings": {
+        "subheading": "CUSTOMISE",
+        "heading": "Add your personal touch",
+        "text": "<p>Create your dream engagement ring with our Bespoke Ring Builder. Tailor each element to suit your personal preferences.</p>",
+        "button_label": "CUSTOMISE",
+        "button_link": "shopify://products/cuff-ring",
+        "image": "shopify://shop_images/personal.png",
+        "text_alignment": "left"
+      }
     }
   },
   "order": [
     "main",
     "related_product_metafield_jqR4Ej",
     "product_recommendations_ehdNP6",
-    "image_with_text_stack_WQiJw9"
+    "image_with_text_stack_WQiJw9",
+    "personal_touch_4UzpdF"
   ]
 }
