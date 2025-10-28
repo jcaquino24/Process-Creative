@@ -210,8 +210,7 @@ label.variant-option__button-label.variant-option__button-label--has-swatch p {
     grid-area: right-image;
 }
 .timeless-elegance-section .content-wrapper {
-    display: grid
-;
+    display: grid;
     grid-template-columns: 1fr 1fr 2em 1fr;
     grid-template-areas:
         "left left 2em right-image"
