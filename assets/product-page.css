@@ -178,6 +178,14 @@ span.menu-list__link-title {
 .text-block h6 strong {
     color: rgba(1, 1, 1, 1);
 }
+.text-block h3 {
+    color: rgba(34, 34, 34, 1);
+    font-weight: 430;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
