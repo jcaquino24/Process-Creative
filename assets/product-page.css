@@ -192,6 +192,10 @@ span.variant-option__swatch-value {
     line-height: 28px;
     font-size: 14px;
 }
+label.variant-option__button-label.variant-option__button-label--has-swatch {
+    padding: 16px 14px 20px 14px;
+    background: rgba(29, 15, 7, 0.02);
+}
 @media (max-width: 768px) {
   .personal-touch-container {
     flex-direction: column;
